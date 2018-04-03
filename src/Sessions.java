@@ -45,6 +45,9 @@ public class Sessions {
 		}
 	}
 	
+	public boolean requestSeats(int numSeats, Requests record){
+		
+	}
 	
 
 }

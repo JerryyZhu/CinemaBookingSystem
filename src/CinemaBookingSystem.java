@@ -1,12 +1,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class CinemaBookingSystem {
 	
 	Map<String, Cinema> map = new HashMap<String, Cinema>();
+	Set<Requests> requestSet;
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -20,6 +24,9 @@ public class CinemaBookingSystem {
 		Scanner sc = null;
 		String currentLine = null;
 		String[] parts = null;
+		
+		requestSet = new LinkedHashSet<Requests>();
+		
 		File input = new File(fileName);
 	      try
 	      {
@@ -55,8 +62,6 @@ public class CinemaBookingSystem {
 		String cinemaName = null;
 		Cinema cinema = null;
 		
-		System.out.println("processCommand first input" + parts[0] +".");
-		
 		// Determine what command
 		switch(parts[0].toLowerCase()) {
 			case "cinema":
@@ -64,31 +69,37 @@ public class CinemaBookingSystem {
 				if (cinema == null) {
 					cinema = new Cinema(parts[1]);
 					map.put(parts[1], cinema);
-					System.out.println(parts[1] + "mapped");
+//					System.out.println(parts[1] + "mapped");
 				}
-				System.out.println("Cinema name" + parts[1] +".");
+//				System.out.println("Cinema name" + parts[1] +".");
 				cinema.addRow(parts[2],parts[3]);
 				break;
 			
 			case "session":
 				// Session 1 09:00 Toy Story
-				System.out.println("Inside session");
+//				System.out.println("Inside session");
 				for(int i = 3; i < parts.length; i++) {
 					movieName = movieName + " " + parts[i];
 				}
-				System.out.println("Movie name is" + movieName);
+//				System.out.println("Movie name is" + movieName);
 				cinemaName = parts[1];
-				System.out.println("Cinema name is " + parts[1]+".");
+//				System.out.println("Cinema name is " + parts[1]+".");
 				cinema = map.get(cinemaName);
 				if (cinema == null) {
-					System.out.println("What the fuck");
-					System.out.println("Cinema" + parts[1] + "does not exist");
+//					System.out.println("Cinema" + parts[1] + "does not exist");
 					break;
 				}
 				cinema.addSession(parts[2], movieName);
 				break;
 				
 			case "request":
+				// Request <id> <cinema> <time> <tickets>
+				String time = parts[3];
+				int numTickets = Integer.parseInt(parts[4]);
+				String cinemaID = parts[2];
+				
+				cinema = map.get(cinemaID);
+				cinema.requestSeats(time, numTickets, record);
 				System.out.println("Not implemented yet");
 				break;
 				
@@ -103,6 +114,7 @@ public class CinemaBookingSystem {
 			case "print":
 				System.out.println("Not implemented yet");
 				break;
+				
 			default:
 				System.out.println("Command not recognised " + parts[0]);
 				break;

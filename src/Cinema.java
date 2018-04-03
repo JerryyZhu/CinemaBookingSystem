@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ public class Cinema {
 		this.id = id;
 		rows = new LinkedHashSet<Row>();
 		sessions = new LinkedHashSet<Sessions>();
+		
 	}
 	
 	/**
@@ -23,11 +25,30 @@ public class Cinema {
 	public void addRow(String rowLetter, String numSeats) {
 		Row newRow = new Row(rowLetter, Integer.parseInt(numSeats));
 		rows.add(newRow);
-		System.out.println(rowLetter + " with " + numSeats + " seats was successfully added to Cinema " + this.id);
+		System.out.println(newRow.getLetter() + " with " + newRow.getNumSeats() + " seats was successfully added to Cinema " + this.id);
 	}
 
 	public void addSession(String time, String movieName) {
 		Sessions newSession = new Sessions(movieName, time);
+		newSession.createSeats(rows);
 		sessions.add(newSession);
+		System.out.println("New session added to Cinema " + id + " "+ movieName + " " + time);
+	}
+	
+	public boolean requestSeats(String time, int numSeats, Requests record) {
+		// Find session that matches the time
+		Sessions current = null;
+		Iterator<Sessions> itr = sessions.iterator();
+		while(itr.hasNext()) {
+			current = itr.next();
+			if (time.equals(current.getTime())) {
+				// Log what row and seats
+				current.requestSeats(numSeats,record);
+				
+				return true;
+			}
+		}
+		return false;
+		
 	}
 }
