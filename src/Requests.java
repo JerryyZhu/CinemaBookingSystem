@@ -6,6 +6,7 @@ public class Requests {
 	private String time;
 	private int start;
 	private int numSeats;
+	private boolean cancelled;
 	
 	public Requests(String ID) {
 		this.requestID = ID;
@@ -31,6 +32,21 @@ public class Requests {
 	public String getRequestID() {
 		return requestID;
 	}
+	
+	/**
+	 * @return the cancelled
+	 */
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	/**
+	 * @param cancelled the cancelled to set
+	 */
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
+	}
+
 	/**
 	 * @param requestID the requestID to set
 	 */
@@ -92,6 +108,16 @@ public class Requests {
 		}
 		else {
 			System.out.println("Booking " + requestID + " " + row + start + "-" + row + (start + numSeats - 1));
+		}
+		
+	}
+	
+	public void outputChange() {
+		if (numSeats == 1) {
+			System.out.println("Change " + requestID + " " + row + start);
+		}
+		else {
+			System.out.println("Change " + requestID + " " + row + start + "-" + row + (start + numSeats - 1));
 		}
 		
 	}

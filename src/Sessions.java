@@ -46,9 +46,10 @@ public class Sessions {
 	}
 	
 	public boolean requestSeats(int numSeats, Requests record){
+		
 		// Iterate through each row, call request and determine if
 		// if it is successful or not
-		
+//		System.out.println("Sessions: requestSeats called for" + time);
 		Seats current = null;
 		Iterator<Seats> itr = seatingRows.iterator();
 		while(itr.hasNext()) {
@@ -66,5 +67,18 @@ public class Sessions {
 		
 	}
 	
+	public boolean changeSeats(int number, Requests record) {
+		// Find old row
+		Seats oldRow = null;
+		Iterator<Seats> itr = seatingRows.iterator();
+		while(itr.hasNext()) {
+			oldRow = itr.next();
+			if (oldRow == null) break; // May be redundant
+			// Check if seats were allocated successfully
+			oldRow.clearSeats(record);
+			return true;
+		}
+		return false;
+	}
 
 }

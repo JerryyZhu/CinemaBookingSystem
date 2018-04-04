@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -26,7 +27,6 @@ public class CinemaBookingSystem {
 		String[] parts = null;
 		
 		requestSet = new LinkedHashSet<Requests>();
-		
 		File input = new File(fileName);
 	      try
 	      {
@@ -56,11 +56,13 @@ public class CinemaBookingSystem {
 	
 	public void processCommand(String line) {
 		// Cinema 1 A 15  # Row A of cinema 1 has 15 seats
-//		System.out.println("Currently processing: " + line);
+		System.out.println("======== Currently processing: " + line + "========");
 		String[] parts = line.split(" ");
 		String movieName = "";
-		String cinemaName = null;
+		String cinemaID = null;
 		Cinema cinema = null;
+		String time = null;
+		String id = null;
 		
 		// Determine what command
 		switch(parts[0].toLowerCase()) {
@@ -82,9 +84,9 @@ public class CinemaBookingSystem {
 					movieName = movieName + " " + parts[i];
 				}
 //				System.out.println("Movie name is" + movieName);
-				cinemaName = parts[1];
+				cinemaID = parts[1];
 //				System.out.println("Cinema name is " + parts[1]+".");
-				cinema = map.get(cinemaName);
+				cinema = map.get(cinemaID);
 				if (cinema == null) {
 //					System.out.println("Cinema" + parts[1] + "does not exist");
 					break;
@@ -94,16 +96,18 @@ public class CinemaBookingSystem {
 				
 			case "request":
 				// Request <id> <cinema> <time> <tickets>
-				String time = parts[3];
+				time = parts[3];
 				int numTickets = Integer.parseInt(parts[4]);
-				String cinemaID = parts[2];
+				cinemaID = parts[2];
 				
 				// Request, 
 				Requests record = new Requests(parts[1]);
 				
 				cinema = map.get(cinemaID);
 				if (cinema.requestSeats(time, numTickets, record)) {
+					record.setCinemaID(cinemaID);
 					record.outputBooking();
+					requestSet.add(record);
 				}
 				else {
 					System.out.println("Booking rejected");
@@ -112,7 +116,44 @@ public class CinemaBookingSystem {
 				break;
 				
 			case "change":
-				System.out.println("Not implemented yet");
+				// Change <id> <cinema> <time> <tickets>
+				int newTicketNum = Integer.parseInt(parts[4]);
+
+				Requests current = null;
+				cinemaID = parts[2];
+				time = parts[3];
+				id = parts[1];
+				
+				// Find corresponding record, otherwise do nothing
+				Iterator<Requests> itr = requestSet.iterator();
+				while(itr.hasNext()) {
+					current = itr.next();
+					// If ID of the record and command match
+					System.out.println("Currently looking for Request ID" + id + " We are at id:" + current.getCinemaID());
+					
+					if (id.equals(current.getRequestID())) {
+						
+						// Grab old details
+						String oldCinema = current.getCinemaID();
+						String oldSession = current.getTime();
+						String oldRow = current.getRow();
+						int oldStart = current.getStart();
+						int oldNumSeats = current.getNumSeats();
+						
+						// Remove booking
+						cinema = map.get(oldCinema);
+						cinema.changeTickets(oldSession, oldNumSeats, current);
+						
+						
+						System.out.println("What's going on");
+						current.outputChange();
+						break;
+					}
+					else {
+						System.out.println("Change rejected");
+					}
+				}
+//				System.out.println("Not implemented yet");
 				break;
 				
 			case "cancel":
