@@ -1,11 +1,30 @@
 
 public class Requests {
 	private String requestID;
+	private String CinemaID;
 	private String row;
 	private String time;
 	private int start;
 	private int numSeats;
 	
+	public Requests(String ID) {
+		this.requestID = ID;
+	}
+	
+	/**
+	 * @return the cinemaID
+	 */
+	public String getCinemaID() {
+		return CinemaID;
+	}
+
+	/**
+	 * @param cinemaID the cinemaID to set
+	 */
+	public void setCinemaID(String cinemaID) {
+		CinemaID = cinemaID;
+	}
+
 	/**
 	 * @return the requestID
 	 */
@@ -67,5 +86,14 @@ public class Requests {
 		this.numSeats = numSeats;
 	}
 	
+	public void outputBooking() {
+		if (numSeats == 1) {
+			System.out.println("Booking " + requestID + " " + row + start);
+		}
+		else {
+			System.out.println("Booking " + requestID + " " + row + start + "-" + row + (start + numSeats - 1));
+		}
+		
+	}
 	
 }

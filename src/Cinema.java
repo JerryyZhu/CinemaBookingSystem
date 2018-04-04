@@ -43,9 +43,13 @@ public class Cinema {
 			current = itr.next();
 			if (time.equals(current.getTime())) {
 				// Log what row and seats
-				current.requestSeats(numSeats,record);
-				
-				return true;
+				if (current.requestSeats(numSeats,record)) {
+					record.setCinemaID(this.id);
+					return true; // Seats found
+				}
+				else {
+					return false; // Request rejected
+				}
 			}
 		}
 		return false;

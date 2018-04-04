@@ -56,7 +56,7 @@ public class CinemaBookingSystem {
 	
 	public void processCommand(String line) {
 		// Cinema 1 A 15  # Row A of cinema 1 has 15 seats
-		System.out.println("Currently processing: " + line);
+//		System.out.println("Currently processing: " + line);
 		String[] parts = line.split(" ");
 		String movieName = "";
 		String cinemaName = null;
@@ -98,9 +98,17 @@ public class CinemaBookingSystem {
 				int numTickets = Integer.parseInt(parts[4]);
 				String cinemaID = parts[2];
 				
+				// Request, 
+				Requests record = new Requests(parts[1]);
+				
 				cinema = map.get(cinemaID);
-				cinema.requestSeats(time, numTickets, record);
-				System.out.println("Not implemented yet");
+				if (cinema.requestSeats(time, numTickets, record)) {
+					record.outputBooking();
+				}
+				else {
+					System.out.println("Booking rejected");
+				}
+//				System.out.println("Not implemented yet");
 				break;
 				
 			case "change":
