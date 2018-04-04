@@ -105,4 +105,28 @@ public class Cinema {
 		
 		return false;
 	}
+	
+	public void revertChanges(String time, String row, int start, int numSeats) {
+		// Find the corresponding session
+		Sessions current = null;
+		Iterator<Sessions> itr = sessions.iterator();
+		while(itr.hasNext()) {
+			current = itr.next();
+			if (time.equals(current.getTime())) {
+				current.revertChanges(row,start,numSeats);
+			}
+		}
+	}
+	
+	public void printSessionInfo(String time) {
+//		System.out.println("Inside Cinema" + id + " for time " + time);
+		Sessions current = null;
+		Iterator<Sessions> itr = sessions.iterator();
+		while(itr.hasNext()) {
+			current = itr.next();
+			if (time.equals(current.getTime())) {
+				current.printInfo();
+			}
+		}
+	}
 }

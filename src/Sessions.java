@@ -80,5 +80,29 @@ public class Sessions {
 		}
 		return false;
 	}
+	
+	public void revertChanges(String row, int start, int numSeats) {
+		Seats current = null;
+		Iterator<Seats> itr = seatingRows.iterator();
+		
+		while(itr.hasNext()) {
+			current = itr.next();
+			if (current == null) break; // May be redundant
+			// Re allocate the seats
+			if (current.getRowID().equals(row)) {
+				current.setSeats(start, numSeats);
+			}
+			
+		}
+	}
 
+	public void printInfo() {
+		Seats current = null;
+		System.out.println(this.title.trim());
+		Iterator<Seats> itr = seatingRows.iterator();
+		while(itr.hasNext()) {
+			current = itr.next();
+			current.printInfo();
+		}
+	}
 }

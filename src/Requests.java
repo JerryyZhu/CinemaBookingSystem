@@ -10,6 +10,7 @@ public class Requests {
 	
 	public Requests(String ID) {
 		this.requestID = ID;
+		this.cancelled = false;
 	}
 	
 	/**
@@ -43,8 +44,8 @@ public class Requests {
 	/**
 	 * @param cancelled the cancelled to set
 	 */
-	public void setCancelled(boolean cancelled) {
-		this.cancelled = cancelled;
+	public void setCancelled() {
+		this.cancelled = true;
 	}
 
 	/**

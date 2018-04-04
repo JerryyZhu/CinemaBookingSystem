@@ -36,12 +36,10 @@ public class CinemaBookingSystem {
 	        	  currentLine = sc.nextLine();
 	        	  parts = currentLine.split("#"); // Removes the comment
 	        	  currentLine = parts[0].trim();
-//	        	  System.out.println("What's about to be passed in" + currentLine + " length is " + currentLine.length());
 	        	  if (currentLine.length() < 3) {
 	        		  continue;
 	        	  }
 	        	  processCommand(currentLine);
-	        	  
 	          }
 	      }
 	      catch (FileNotFoundException e)
@@ -63,6 +61,7 @@ public class CinemaBookingSystem {
 		Cinema cinema = null;
 		String time = null;
 		String id = null;
+		Requests current = null;
 		
 		// Determine what command
 		switch(parts[0].toLowerCase()) {
@@ -118,8 +117,7 @@ public class CinemaBookingSystem {
 			case "change":
 				// Change <id> <cinema> <time> <tickets>
 				int newTicketNum = Integer.parseInt(parts[4]);
-
-				Requests current = null;
+				Cinema newCinema = null;
 				cinemaID = parts[2];
 				time = parts[3];
 				id = parts[1];
@@ -128,9 +126,9 @@ public class CinemaBookingSystem {
 				Iterator<Requests> itr = requestSet.iterator();
 				while(itr.hasNext()) {
 					current = itr.next();
-					// If ID of the record and command match
-					System.out.println("Currently looking for Request ID" + id + " We are at id:" + current.getCinemaID());
 					
+					// If ID of the record and command match
+//					System.out.println("Currently looking for Request ID" + id + " We are at id:" + current.getCinemaID());
 					if (id.equals(current.getRequestID())) {
 						
 						// Grab old details
@@ -144,28 +142,69 @@ public class CinemaBookingSystem {
 						cinema = map.get(oldCinema);
 						cinema.changeTickets(oldSession, oldNumSeats, current);
 						
-						
-						System.out.println("What's going on");
-						current.outputChange();
+						// Try Booking New 
+						newCinema = map.get(cinemaID);
+						if (cinema.requestSeats(time, newTicketNum, current)) {
+							current.setCinemaID(cinemaID);
+							current.outputChange();
+						}
+						else {
+							// TESTING ONLY
+							cinema.revertChanges(oldSession, oldRow, oldStart, oldNumSeats);
+//							current.outputChange(); // TESTING ONLY
+							System.out.println("Change rejected");
+						}
 						break;
 					}
-					else {
-						System.out.println("Change rejected");
-					}
+					
 				}
 //				System.out.println("Not implemented yet");
 				break;
 				
 			case "cancel":
-				System.out.println("Not implemented yet");
+				// Cancel <id>
+				// Find the request id, to get relevant details such as cinema, session, and seat numbers
+				id = parts[1];
+				Iterator<Requests> itrr = requestSet.iterator();
+				while(itrr.hasNext()) {
+					current = itrr.next();
+					if (id.equals(current.getRequestID())) {
+						// Early exit, if cancelled dont need to clear seats, in case they've been booked
+						// again
+						if (current.isCancelled()) {
+							System.out.println("Cancel rejected");
+							return;
+						}
+						
+						String oldCinema = current.getCinemaID();
+						String oldSession = current.getTime();
+						int oldNumSeats = current.getNumSeats();
+						
+						// Remove booking
+						cinema = map.get(oldCinema);
+						cinema.changeTickets(oldSession, oldNumSeats, current);
+						current.setCancelled();
+						System.out.println("Cancel " + id);
+					}
+					
+				}
+				
+//				System.out.println("Not implemented yet");
 				break;
 				
 			case "print":
-				System.out.println("Not implemented yet");
+				cinemaID = parts[1];
+				cinema = map.get(cinemaID);
+//				System.out.println(parts[1]);
+				if (cinema != null) {
+					cinema.printSessionInfo(parts[2]);
+				}
+				
+//				System.out.println("Not implemented yet");
 				break;
 				
 			default:
-				System.out.println("Command not recognised " + parts[0]);
+//				System.out.println("Command not recognised " + parts[0]);
 				break;
 		}
 	}

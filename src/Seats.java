@@ -46,6 +46,13 @@ public class Seats {
 		return false;
 	}
 	
+	/**
+	 * @return the rowID
+	 */
+	public String getRowID() {
+		return rowID;
+	}
+
 	public void clearSeats(Requests record) {
 		int numSeats = record.getNumSeats();
 		int startNum = record.getStart();
@@ -68,5 +75,57 @@ public class Seats {
 		for (int i = startNum; i<(startNum + numSeats); i++) {
 			row[i] = true;
 		}
+	}
+	
+	public void printInfo() {
+		// Do not print out anything for a row that is completely empty as per specifications
+		if (isEmpty()) {
+			return;
+		}
+		else {
+			int lastFull = -1;
+			int count = 0;
+			boolean first = true;
+			System.out.print(rowID + ": ");
+			for (int i = 0; i < row.length; i++) {
+				if (row[i]) {
+					if (lastFull == -1) {
+						lastFull = i;
+					}
+					count += 1;
+				}
+				else {
+					if (lastFull == -1) {
+						if (first) {
+							if (count == 1) {
+								System.out.print(lastFull);
+							}
+							else {
+								System.out.print(lastFull + "-" + (lastFull + count - 1));
+							}
+						}
+						else {
+							if (count == 1) {
+								System.out.print("," + lastFull);
+							}
+							else {
+								System.out.print("," + lastFull + "-" + (lastFull + count - 1));
+							}
+						}
+					}
+					else {
+						// Do nothing
+						lastFull = -1;
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean isEmpty() {
+		for (int i = 0; i < row.length; i++) {
+			if (row[i]) return false;
+		}
+		return true;
 	}
 }
