@@ -201,6 +201,12 @@ public class CinemaBookingSystem {
 				}
 				
 //				System.out.println("Not implemented yet");
+				Set<String> cinemaRows = new LinkedHashSet<String>();
+				// Iterate through all requests
+				Iterator<Requests> itr = requestSet.iterator();
+				
+				// Need a set of rows to look through
+				
 				break;
 				
 			default:
@@ -208,5 +214,19 @@ public class CinemaBookingSystem {
 				break;
 		}
 	}
-
+	public void print(String cinemaID, String time) {
+		Cinema cinema = map.get(cinemaID);
+		if (cinema != null) {
+			
+		}
+		Set<String> cinemaRows = new LinkedHashSet<String>();
+		// Iterate through all requests
+		Iterator<Requests> itr = requestSet.iterator();
+		Requests current = null;
+		while(itr.hasNext()) {
+			current = itr.next();
+			if (current.getCinemaID().equals(cinemaID) && )
+		}
+		
+	}
 }

@@ -139,6 +139,6 @@ public class Cinema {
 			current = itr.next();
 			list.add(current.getLetter());
 		}
-		return list;	
+		return list;
 	}
 }
