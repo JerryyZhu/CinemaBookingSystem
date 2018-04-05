@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -128,5 +129,16 @@ public class Cinema {
 				current.printInfo();
 			}
 		}
+	}
+	
+	public ArrayList<String> getRows(){
+		ArrayList<String> list = new ArrayList<String>();
+		Iterator<Row> itr = rows.iterator();
+		Row current = null;
+		while(itr.hasNext()) {
+			current = itr.next();
+			list.add(current.getLetter());
+		}
+		return list;	
 	}
 }

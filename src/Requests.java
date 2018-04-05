@@ -123,4 +123,14 @@ public class Requests {
 		
 	}
 	
+	public void printSeats() {
+		if (numSeats == 1) {
+			System.out.print(start);
+		}
+		else {
+			System.out.print(start + "-" + (start + numSeats -1));
+		}
+		
+	}
+	
 }
