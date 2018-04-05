@@ -95,14 +95,17 @@ public class Sessions {
 			
 		}
 	}
+	
+// NOT USED, misread spec, produced output based on seat allocation instead of bookings
+// e.g. A: 1-10,11-14 became A: 1-14
 
-	public void printInfo() {
-		Seats current = null;
-		System.out.println(this.title.trim());
-		Iterator<Seats> itr = seatingRows.iterator();
-		while(itr.hasNext()) {
-			current = itr.next();
-			current.printInfo();
-		}
-	}
+//	public void printInfo() {
+//		Seats current = null;
+//		System.out.println(this.title.trim());
+//		Iterator<Seats> itr = seatingRows.iterator();
+//		while(itr.hasNext()) {
+//			current = itr.next();
+//			current.printInfo();
+//		}
+//	}
 }

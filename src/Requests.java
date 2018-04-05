@@ -1,5 +1,5 @@
 
-public class Requests {
+public class Requests implements Comparable<Requests>{
 	private String requestID;
 	private String CinemaID;
 	private String row;
@@ -130,6 +130,12 @@ public class Requests {
 		else {
 			System.out.print(start + "-" + (start + numSeats -1));
 		}
+		
+	}
+
+	@Override
+	public int compareTo(Requests that) {
+		return this.start - that.start;
 		
 	}
 	

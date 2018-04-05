@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -54,7 +56,7 @@ public class CinemaBookingSystem {
 	
 	public void processCommand(String line) {
 		// Cinema 1 A 15  # Row A of cinema 1 has 15 seats
-		System.out.println("======== Currently processing: " + line + "========");
+//		System.out.println("======== Currently processing: " + line + "========");
 		String[] parts = line.split(" ");
 		String movieName = "";
 		String cinemaID = null;
@@ -194,19 +196,8 @@ public class CinemaBookingSystem {
 				
 			case "print":
 				cinemaID = parts[1];
-				cinema = map.get(cinemaID);
-//				System.out.println(parts[1]);
-				if (cinema != null) {
-					cinema.printSessionInfo(parts[2]);
-				}
-				
-//				System.out.println("Not implemented yet");
-				Set<String> cinemaRows = new LinkedHashSet<String>();
-				// Iterate through all requests
-				Iterator<Requests> itr = requestSet.iterator();
-				
-				// Need a set of rows to look through
-				
+				time = parts[2];
+				this.print(cinemaID, time);
 				break;
 				
 			default:
@@ -214,19 +205,56 @@ public class CinemaBookingSystem {
 				break;
 		}
 	}
+	
 	public void print(String cinemaID, String time) {
 		Cinema cinema = map.get(cinemaID);
-		if (cinema != null) {
-			
-		}
-		Set<String> cinemaRows = new LinkedHashSet<String>();
-		// Iterate through all requests
-		Iterator<Requests> itr = requestSet.iterator();
+		Iterator<Requests> itr = null;
+		ArrayList<String> rows = null;
 		Requests current = null;
-		while(itr.hasNext()) {
-			current = itr.next();
-			if (current.getCinemaID().equals(cinemaID) && )
+		ArrayList<Requests> rowRequests = null;
+
+		if (cinema != null) {
+			rows = cinema.getRows();
+			for(String currentRow: rows) {
+				rowRequests = new ArrayList<Requests>();
+				itr = requestSet.iterator();
+				while(itr.hasNext()) {
+					current = itr.next();
+					if (current.getCinemaID().equals(cinemaID) && current.getTime().equals(time) && current.getRow().equals(currentRow)) {
+						if (!current.isCancelled()) {
+							rowRequests.add(current);
+						}
+					}
+				}
+				// Sort the requests by seat number
+				Collections.sort(rowRequests);
+				// No seats 
+				if (rowRequests.isEmpty()) continue;
+				else {
+					Iterator<Requests> seatItr = rowRequests.iterator();
+					Requests indexRow = null;
+					for (int i = 0; i < rowRequests.size() ; i++) {
+						indexRow = seatItr.next();
+						if (i == 0) {
+							System.out.print(indexRow.getRow() + ": ");
+							indexRow.printSeats();
+						}
+						else {
+							System.out.print(",");
+							indexRow.printSeats();
+						}
+					}
+					System.out.print("\n");
+
+				}
+			}
 		}
+		
+		
+		// Iterate through all requests
+		
+		
+		
 		
 	}
 }

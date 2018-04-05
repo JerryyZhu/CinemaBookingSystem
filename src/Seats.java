@@ -77,80 +77,84 @@ public class Seats {
 		}
 	}
 	
-	public void printInfo() {
-		// Do not print out anything for a row that is completely empty as per specifications
-		if (isEmpty()) {
-			return;
-		}
-		
-		int count = 0;
-		int lastFull = -1;
-		boolean first = true;		
-		System.out.print(rowID + ": ");
-		
-		
-		for (int i = 1; i<row.length ; i++) {
-			// Seat allocated
-			if (row[i]) {
-				if (lastFull == -1) lastFull = i;
-				count += 1;
-			}
-			// Seat not allocated
-			else {
-				if (lastFull != -1) {
-					// Need to output seat numbers
-					// Determine if it is the first output, if so, no preceding comma.
-					// Also check for singular case
-					if (first) {
-						if (count == 1) {
-							System.out.print(lastFull);
-						}
-						System.out.print(lastFull + "-" + (lastFull+count -1));
-						first = false;
-					}
-					else {
-						if (count == 1) {
-							System.out.print("," + lastFull);
-						}
-						else {
-							System.out.print("," +lastFull + "-" + (lastFull+count -1));
-						}
-					}
-					// Reset the variables to find next occupied seats
-					lastFull = -1;
-					count = 0;
-				}
-			}
-			// End case
-			// Need to print seats regardless
-			if ( i == (row.length-1)) {
-				if (lastFull != 1) {
-					if (first) {
-						if (count == 1) {
-							System.out.print(lastFull);
-						}
-						System.out.print(lastFull + "-" + (lastFull+count -1));
-						first = false;
-					}
-					else {
-						if (count == 1) {
-							System.out.print("," + lastFull);
-						}
-						else {
-							System.out.print("," +lastFull + "-" + (lastFull+count -1));
-						}
-					}
-				}
-			}
-		}
-		System.out.print("\n");
-			
-	}
-	
 	private boolean isEmpty() {
 		for (int i = 0; i < row.length; i++) {
 			if (row[i]) return false;
 		}
 		return true;
 	}
+	
+	
+	// NOT USED, misread spec, produced output based on seat allocation instead of bookings
+	// e.g. A: 1-10,11-14 became A: 1-14
+	//
+	//		public void printInfo() {
+	//			// Do not print out anything for a row that is completely empty as per specifications
+	//			if (isEmpty()) {
+	//				return;
+	//			}
+	//			
+	//			int count = 0;
+	//			int lastFull = -1;
+	//			boolean first = true;		
+	//			System.out.print(rowID + ": ");
+	//			
+	//			
+	//			for (int i = 1; i<row.length ; i++) {
+	//				// Seat allocated
+	//				if (row[i]) {
+	//					if (lastFull == -1) lastFull = i;
+	//					count += 1;
+	//				}
+	//				// Seat not allocated
+	//				else {
+	//					if (lastFull != -1) {
+	//						// Need to output seat numbers
+	//						// Determine if it is the first output, if so, no preceding comma.
+	//						// Also check for singular case
+	//						if (first) {
+	//							if (count == 1) {
+	//								System.out.print(lastFull);
+	//							}
+	//							System.out.print(lastFull + "-" + (lastFull+count -1));
+	//							first = false;
+	//						}
+	//						else {
+	//							if (count == 1) {
+	//								System.out.print("," + lastFull);
+	//							}
+	//							else {
+	//								System.out.print("," +lastFull + "-" + (lastFull+count -1));
+	//							}
+	//						}
+	//						// Reset the variables to find next occupied seats
+	//						lastFull = -1;
+	//						count = 0;
+	//					}
+	//				}
+	//				// End case
+	//				// Need to print seats regardless
+	//				if ( i == (row.length-1)) {
+	//					if (lastFull != 1) {
+	//						if (first) {
+	//							if (count == 1) {
+	//								System.out.print(lastFull);
+	//							}
+	//							System.out.print(lastFull + "-" + (lastFull+count -1));
+	//							first = false;
+	//						}
+	//						else {
+	//							if (count == 1) {
+	//								System.out.print("," + lastFull);
+	//							}
+	//							else {
+	//								System.out.print("," +lastFull + "-" + (lastFull+count -1));
+	//							}
+	//						}
+	//					}
+	//				}
+	//			}
+	//			System.out.print("\n");
+	//				
+	//		}
 }

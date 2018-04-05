@@ -36,7 +36,7 @@ public class Cinema {
 	public void addRow(String rowLetter, String numSeats) {
 		Row newRow = new Row(rowLetter, Integer.parseInt(numSeats));
 		rows.add(newRow);
-		System.out.println(newRow.getLetter() + " with " + newRow.getNumSeats() + " seats was successfully added to Cinema " + this.id);
+//		System.out.println(newRow.getLetter() + " with " + newRow.getNumSeats() + " seats was successfully added to Cinema " + this.id);
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class Cinema {
 	 */
 	public void addSession(String time, String movieName) {
 		Sessions newSession = new Sessions(movieName, time);
-		System.out.println("Cinema adding sessions with rows" + rows);
+//		System.out.println("Cinema adding sessions with rows" + rows);
 		newSession.createSeats(rows);
 		sessions.add(newSession);
 //		System.out.println("New session added to Cinema " + id + " "+ movieName + " " + time);
@@ -119,18 +119,7 @@ public class Cinema {
 		}
 	}
 	
-	public void printSessionInfo(String time) {
-//		System.out.println("Inside Cinema" + id + " for time " + time);
-		Sessions current = null;
-		Iterator<Sessions> itr = sessions.iterator();
-		while(itr.hasNext()) {
-			current = itr.next();
-			if (time.equals(current.getTime())) {
-				current.printInfo();
-			}
-		}
-	}
-	
+
 	public ArrayList<String> getRows(){
 		ArrayList<String> list = new ArrayList<String>();
 		Iterator<Row> itr = rows.iterator();
@@ -141,4 +130,19 @@ public class Cinema {
 		}
 		return list;
 	}
+// NOT USED, misread spec, produced output based on seat allocation instead of bookings
+// e.g. A: 1-10,11-14 became A: 1-14
+	
+//	public void printSessionInfo(String time) {
+////System.out.println("Inside Cinema" + id + " for time " + time);
+//Sessions current = null;
+//Iterator<Sessions> itr = sessions.iterator();
+//while(itr.hasNext()) {
+//	current = itr.next();
+//	if (time.equals(current.getTime())) {
+//		current.printInfo();
+//	}
+//}
+//}
+
 }
